@@ -1,0 +1,13 @@
+.postcard img {
+    width: 60px;
+    height: 60px;
+    object-fit: fill;
+}
+
+.postcard .post-body p {
+    padding: 5px 10px;
+}
+
+.postcard span {
+    padding-left: 30px;
+}
