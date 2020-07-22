@@ -17,7 +17,7 @@ class Post extends Component {
     }
     componentDidMount() {
         const postId = this.props.post._id;
-        Axios.get(`http://localhost:5000/postLike/${postId}`, {withCredentials: true})
+        Axios.get(`/api/postLike/${postId}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 201);
                 else {
@@ -44,7 +44,7 @@ class Post extends Component {
             userId: this.props.userId,
             isLiked: this.state.isLiked,
         }
-        Axios.post('http://localhost:5000/post/like', data, {withCredentials: true})
+        Axios.post('/api/post/like', data, {withCredentials: true})
             .then(res => {
                 if(res.status === 200) {
                     this.setState({
@@ -64,7 +64,7 @@ class Post extends Component {
             .catch(err => console.log(err));
     }
     handleDelete = (postId) => {
-        Axios.get(`http://localhost:5000/post/delete/${postId}`, {withCredentials: true})
+        Axios.get(`/api/post/delete/${postId}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();

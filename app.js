@@ -55,13 +55,13 @@ app.use(passport.session());
 
 
 
-app.get('/feed', checkProfileLogStatus, (req, res) => {
+app.get('/api/feed', checkProfileLogStatus, (req, res) => {
     Post.find().sort({ createdAt: -1})
         .then(result => res.send(result))
         .catch(err => console.log(err));
 })
 
-app.get('/post/:id', checkProfileLogStatus, (req, res) => {
+app.get('/api/post/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     Post.find({'userId': id}).sort({ createdAt: -1})
         .then(posts => {
@@ -70,7 +70,7 @@ app.get('/post/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/postLike/:id', checkProfileLogStatus, (req, res) => {
+app.get('/api/postLike/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
     Post.findById(id, 'userId likedUserIds')
@@ -122,7 +122,7 @@ app.get('/postLike/:id', checkProfileLogStatus, (req, res) => {
     
 })
 
-app.post('/post/like', checkProfileLogStatus, (req, res) => {
+app.post('/api/post/like', checkProfileLogStatus, (req, res) => {
     const postId = req.body.postId;
     const userId = req.body.userId;
 
@@ -149,7 +149,7 @@ app.post('/post/like', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/post/delete/:id', checkProfileLogStatus, (req, res) => {
+app.get('/api/post/delete/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     if(req.session.user) {
         Post.findByIdAndDelete(id)
@@ -162,7 +162,7 @@ app.get('/post/delete/:id', checkProfileLogStatus, (req, res) => {
     }
 })
 
-app.get('/followpage', checkProfileLogStatus, (req, res) => {
+app.get('/api/followpage', checkProfileLogStatus, (req, res) => {
     if(req.session.user) {
         const userId = req.session.user._id;
         const userName = req.session.user.userName;
@@ -177,7 +177,7 @@ app.get('/followpage', checkProfileLogStatus, (req, res) => {
     }
 })
 
-app.post('/follow', checkProfileLogStatus, (req, res) => {
+app.post('/api/follow', checkProfileLogStatus, (req, res) => {
     const userId = req.session.user._id;
     const userName = req.session.user.userName;
     const followUserId = req.body.followUserId;
@@ -193,7 +193,7 @@ app.post('/follow', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.post('/unfollow', checkProfileLogStatus, (req, res) => {
+app.post('/api/unfollow', checkProfileLogStatus, (req, res) => {
     const userId = req.session.user._id;
     const userName = req.session.user.userName;
     const unFollowUserId = req.body.unFollowUserId;
@@ -211,7 +211,7 @@ app.post('/unfollow', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.post('/login', checkLoginLogStatus, (req, res, next) => {
+app.post('/api/login', checkLoginLogStatus, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
             res.status(203).send(err);
@@ -228,7 +228,7 @@ app.post('/login', checkLoginLogStatus, (req, res, next) => {
     })(req, res, next);
 });
 
-app.get('/checkuser', (req, res) => {
+app.get('/api/checkuser', (req, res) => {
     if(req.session.user) {
         res.status(203).send({ isLoggedIn: true, userId: req.session.user._id, userName: req.session.user.userName, userEmail: req.session.user.email, });
     } else {
@@ -236,13 +236,13 @@ app.get('/checkuser', (req, res) => {
     }
 })
 
-app.get('/logout', (req, res) => {
+app.get('/api/logout', (req, res) => {
     req.session.destroy(() => {
         res.status(200).send('Successfully logged out!')
     });
   })
 
-app.get('/following/:id', checkProfileLogStatus, (req, res) => {
+app.get('/api/following/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     User.findOne({ '_id': id }, {following: 1})
         .then(followingUsers => {
@@ -251,7 +251,7 @@ app.get('/following/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/follower/:id', checkProfileLogStatus, (req, res) => {
+app.get('/api/follower/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     User.findOne({ '_id': id }, {followers: 1})
         .then(followerUsers => {
@@ -260,7 +260,7 @@ app.get('/follower/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/checkfollowstatus/:id', checkProfileLogStatus, (req, res) => {
+app.get('/api/checkfollowstatus/:id', checkProfileLogStatus, (req, res) => {
     const id = req.params.id.trim();
     const userId = req.session.user._id;
     User.findOne({ $and: [{'_id': userId, following: { $elemMatch:{ userId: id } }}]})
@@ -274,7 +274,7 @@ app.get('/checkfollowstatus/:id', checkProfileLogStatus, (req, res) => {
         .catch(err => console.log(err));
 })
 
-app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
+app.get('/api/user/:id', checkProfileLogStatus, (req, res, next) => {
     const id = req.params.id.trim();
     
     User.findById(id, 'userName email followersCount followingCount')
@@ -287,7 +287,7 @@ app.get('/user/:id', checkProfileLogStatus, (req, res, next) => {
 })
 
 
-app.post('/addpost', checkProfileLogStatus, (req, res) => {
+app.post('/api/addpost', checkProfileLogStatus, (req, res) => {
     const post = req.body;
     const newPost = new Post(post);
     newPost.save()
@@ -315,7 +315,7 @@ function checkLoginLogStatus(req, res, next) {
     }
 }
 
-app.post('/signup', async (req, res) => {
+app.post('/api/signup', async (req, res) => {
     const userInfo = req.body;
     let error = [];
 

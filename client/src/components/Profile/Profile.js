@@ -29,7 +29,7 @@ class Profile extends Component {
     }
     getData = () => {
         let path = this.props.history.location.pathname.slice(9);
-        Axios.get(`http://localhost:5000/user/${path}`, {withCredentials: true})
+        Axios.get(`/api/user/${path}`, {withCredentials: true})
             .then(res => {
                 if(res.status === 207) {
                     this.props.logoutUser();
