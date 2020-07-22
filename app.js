@@ -11,7 +11,7 @@ const e = require('express');
 const path = require('path');
 
 const app = express();
-
+const PORT = process.env.PORT || 5000;
 
 //Passport config
 require('./passport')(passport);
@@ -22,7 +22,7 @@ const dbUrl = "mongodb+srv://admin:pass123@socioapp-lcfq8.mongodb.net/socio-app?
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
     .then((response) => {
         console.log("connected to db");
-        app.listen(5000, () => {
+        app.listen(PORT, () => {
             console.log('Listning at port 5000');
         });
     })
