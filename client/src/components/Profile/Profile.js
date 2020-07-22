@@ -39,6 +39,9 @@ class Profile extends Component {
                     })
                 } else if(res.status === 200) {
                     this.setState({
+                        showPostButton: false,
+                    });
+                    this.setState({
                         userId: res.data.userId,
                         userName: res.data.userName,
                         thisPageUserId: this.props.history.location.pathname.slice(9),
@@ -69,15 +72,17 @@ class Profile extends Component {
             .catch(err => console.log(err));
     }
     componentDidUpdate() {
-        if(this.state.thisPageUserId !== this.props.history.location.pathname.slice(9)) {
-            this.getData();
+        if(this.state.thisPageUserId) {
+            if(this.state.thisPageUserId !== this.props.history.location.pathname.slice(9)) {
+                this.getData();
+            }
         }
     }
     componentDidMount() {
         this.getData();
     }
     handleEdit = () => {
-
+        alert('This feature is not available at the moment.')
     }
     handleFollowers = () => {
         if(this.state.followersButton === true) {
@@ -150,7 +155,7 @@ class Profile extends Component {
                                     <div className="col l6 m12 s12">
                                         <div className="info">
                                             <h4>{ this.state.thisPageUserName }</h4>
-                                            <h4>{ this.state.thisPageEmail }</h4>
+                                            <p>{ this.state.thisPageEmail }</p>
                                             { editButton }
                                         </div>
                                     </div>
