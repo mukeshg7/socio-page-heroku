@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { login, logout } from '../actions/action'
 import Feed from './Post/Feed'
 import './Home.css'
+import Search from './Search'
 import AddPost from './Post/AddPost'
 import img from '../assets/Pikachu.png'
 
@@ -65,9 +66,7 @@ class Home extends Component {
                     </div>
 
                     <div className="col l3 m5 s12">
-                        <div className="card">
-                            <h4>Search</h4>
-                        </div>
+                        <Search />
                     </div>
     
                 </div>

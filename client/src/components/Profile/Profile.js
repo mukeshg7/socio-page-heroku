@@ -75,7 +75,6 @@ class Profile extends Component {
                         pathname: '/login'
                     })
                 }
-                console.log("aaa");
                 this.setState({
                     gotData: true,
                 })
